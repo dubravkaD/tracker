@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/home"
+        android:icon="@drawable/baseline_home_24"
+        android:id="@+id/homeFragment"/>
+    <item android:title="@string/favorites"
+        android:icon="@drawable/baseline_favorite_24"
+        android:id="@+id/favoritesFragment"/>
+    <item android:title="@string/add"
+        android:icon="@drawable/baseline_add_24"
+        android:id="@+id/addProductFragment"/>
+<!--    <item android:title="@string/main"-->
+<!--        android:icon="@drawable/baseline_home_24"-->
+<!--        android:id="@+id/mainFragment"/>-->
+</menu>
