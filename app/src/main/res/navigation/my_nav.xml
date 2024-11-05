@@ -51,5 +51,15 @@
 <!--            app:argType="string"-->
 <!--            android:defaultValue="Product1" />-->
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.tracker.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.tracker.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" />
 
 </navigation>

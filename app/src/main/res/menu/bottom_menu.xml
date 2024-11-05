@@ -13,4 +13,8 @@
 <!--    <item android:title="@string/main"-->
 <!--        android:icon="@drawable/baseline_home_24"-->
 <!--        android:id="@+id/mainFragment"/>-->
+
+    <item android:title="@string/settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:id="@+id/settingsFragment"/>
 </menu>
