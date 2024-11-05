@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.tracker.FavoritesFragment"
+        android:name="com.example.tracker.fragments.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/addProductFragment"
-        android:name="com.example.tracker.AddProductFragment"
+        android:name="com.example.tracker.fragments.AddProductFragment"
         android:label="fragment_add_product"
         tools:layout="@layout/fragment_add_product" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.tracker.HomeFragment"
+        android:name="com.example.tracker.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/registerFragment"
-        android:name="com.example.tracker.RegisterFragment"
-        android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
-    <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.tracker.MainFragment"
+        android:name="com.example.tracker.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
 <!--        <action-->
@@ -40,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="com.example.tracker.ProductDetailsFragment"
+        android:name="com.example.tracker.fragments.ProductDetailsFragment"
         android:label="fragment_product_details"
         tools:layout="@layout/fragment_product_details" >
 <!--        <action-->
@@ -53,13 +49,8 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.tracker.SettingsFragment"
+        android:name="com.example.tracker.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.example.tracker.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" />
 
 </navigation>

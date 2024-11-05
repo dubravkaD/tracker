@@ -29,10 +29,13 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController,appBarConfiguration)
 
-
         bottomNavigationView.setupWithNavController(navController)
+//        navController.navigate(R.id.splashFragment)
+        navController.navigate(R.id.homeFragment)
+    }
 
-        navController.navigate(R.id.splashFragment)
-//        navController.navigate(R.id.homeFragment)
+    public fun setBottomNavigationVisibility(visibility:Int){
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = visibility
     }
 }
