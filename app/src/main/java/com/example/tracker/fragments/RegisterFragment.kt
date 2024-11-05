@@ -41,4 +41,7 @@ class RegisterFragment : Fragment() {
         return view
     }
 
+    private fun register(email:String,pass:String){
+
+    }
 }

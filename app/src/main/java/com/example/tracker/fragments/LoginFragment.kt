@@ -54,9 +54,8 @@ class LoginFragment : Fragment() {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
+    private fun login(email:String,pass:String){
 
+    }
 
 }
