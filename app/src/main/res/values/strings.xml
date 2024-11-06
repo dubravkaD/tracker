@@ -20,4 +20,10 @@
     <string name="don_t_have_account">Don\'t have account?</string>
     <string name="register">Register</string>
     <string name="alredy_have_account">Alredy have account?</string>
+    <string name="name">Name</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="origin">Origin</string>
+    <string name="category">Category</string>
+    <string name="barcode">Barcode</string>
+    <string name="product_image">Product Image</string>
 </resources>
