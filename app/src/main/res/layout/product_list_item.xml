@@ -77,13 +77,6 @@
             <Space
                 android:layout_width="10dp"
                 android:layout_height="match_parent"/>
-            <ImageView
-                android:id="@+id/ivFavorite"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="end"
-                android:contentDescription="@string/favorites"
-                android:src="@drawable/baseline_favorite_border_24"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

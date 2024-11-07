@@ -192,5 +192,11 @@ enum class Country (val displayName: String){
     VIETNAM("Vietnam"),
     YEMEN("Yemen"),
     ZAMBIA("Zambia"),
-    ZIMBABWE("Zimbabwe")
+    ZIMBABWE("Zimbabwe");
+
+    override fun toString(): String {
+        return displayName
+    }
+
+
 }

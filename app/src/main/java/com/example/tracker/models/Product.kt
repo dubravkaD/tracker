@@ -4,12 +4,14 @@ import com.example.tracker.util.enums.Category
 
 class Product {
 
-    private lateinit var id: String
-    private lateinit var name: String
-    private lateinit var manufacturer: String
-    private lateinit var countryOfOrigin: String
-    private lateinit var barcode: String
-    private lateinit var category: String
+    var id: String? = null
+    var user: User? = null
+    var name: String? = null
+    var manufacturer: String? = null
+    var countryOfOrigin: String? = null
+    var barcode: String? = null
+    var category: String? = null
+    var image:String? = null
 
     constructor(){}
     constructor(
@@ -27,5 +29,26 @@ class Product {
         this.barcode = barcode
         this.category = category
     }
+
+    constructor(
+        id: String,
+        user: User,
+        name: String,
+        manufacturer: String,
+        countryOfOrigin: String,
+        barcode: String,
+        category: String,
+        image: String
+    ) {
+        this.id = id
+        this.user = user
+        this.name = name
+        this.manufacturer = manufacturer
+        this.countryOfOrigin = countryOfOrigin
+        this.barcode = barcode
+        this.category = category
+        this.image = image
+    }
+
 
 }

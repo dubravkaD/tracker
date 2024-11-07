@@ -44,5 +44,9 @@ enum class Category(val displayName: String) {
     SUPPLEMENTS("Supplements"),
     DIY_PRODUCTS("DIY Products"),
     VINTAGE("Vintage"),
-    COLLECTIBLES("Collectibles")
+    COLLECTIBLES("Collectibles");
+
+    override fun toString(): String {
+        return displayName
+    }
 }

@@ -1,16 +1,19 @@
 package com.example.productorigintracker.adapters
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.productorigintracker.models.Product
+import com.example.productorigintracker.models.User
 import com.example.tracker.R
 
-class ProductAdapter(val context: Context, val productList: ArrayList<Product>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProductAdapter(val context: Context, var productList: ArrayList<Product>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        TODO("Not yet implemented")
+        val view: View = LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false)
+        return ProductViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -18,10 +21,34 @@ class ProductAdapter(val context: Context, val productList: ArrayList<Product>) 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val current = productList[position]
+        val viewHolder = holder as ProductViewHolder
+
+        viewHolder.productName.text = current.name
+        viewHolder.productImage.text = current.image
+        viewHolder.manufacturer.text = current.manufacturer
+        viewHolder.countryOfOrigin.text = current.countryOfOrigin
+        viewHolder.barcode.text = current.barcode
+        viewHolder.category.text = current.category
     }
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val productImage = itemView.findViewById<TextView>(R.id.ivImage)
+        val productName = itemView.findViewById<TextView>(R.id.tvName)
+        val manufacturer = itemView.findViewById<TextView>(R.id.tvManufacturer)
+        val countryOfOrigin = itemView.findViewById<TextView>(R.id.tvOrigin)
+        val barcode = itemView.findViewById<TextView>(R.id.tvBarcode)
+        val category = itemView.findViewById<TextView>(R.id.tvCategory)
+    }
 
+    fun filter(name:String){
+        productList = if (name.isEmpty()){
+            productList
+        } else ({
+            productList.filter{ it.name?.contains(name,ignoreCase = true) == true }
+
+        }) as ArrayList<Product>
+
+        notifyDataSetChanged()
     }
 }
