@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -33,7 +34,11 @@ class HomeFragment : Fragment() {
 
 //        recyclerView = view.findViewById(R.id.rvProduct)
         val searchEditText = view.findViewById<EditText>(R.id.searchEditText).text.toString()
+        val searchButton = view.findViewById<ImageButton>(R.id.ibSearch)
 
+        searchButton.setOnClickListener {
+
+        }
 //        val user = User("d","d@d","1654crt")
 //        val product = Product("1", user,"product 1","m1",Country.SERBIA.toString(),"5616fyt",Category.FOOD.toString(),"drawable/baseline_home_24.xml")
 //        productList.add(product)
