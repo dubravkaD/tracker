@@ -118,20 +118,7 @@ class AddProductFragment : Fragment() {
 //        user = userRef.child(uid).get()
 
         // BUTTONS
-        val pickButton = view.findViewById<Button>(R.id.btnPick)
         val saveButton = view.findViewById<Button>(R.id.btnSave)
-
-        // For API >= 30
-        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            uri?.let {
-                val imageView = view.findViewById<ImageView>(R.id.imageViewPick)
-                imageView.setImageURI(it)
-                uri = it
-            }
-        }
-        pickButton.setOnClickListener {
-            pickImage.launch("image/*")
-        }
 
         saveButton.setOnClickListener {
             save()
@@ -139,6 +126,24 @@ class AddProductFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val pickButton = view.findViewById<Button>(R.id.btnPick)
+
+        // For API >= 30
+        val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { selectedURI ->
+            selectedURI?.let {
+                val imageView = view.findViewById<ImageView>(R.id.imageViewPick)
+                imageView.setImageURI(it)
+                uri = it
+            }
+        }
+        pickButton.setOnClickListener {
+            pickImage.launch("image/*")
+            Log.i("imagePicker ",uri.toString())
+        }
+    }
     private fun save() {
         name = requireView().findViewById<EditText>(R.id.editTextName).text.toString()
         barcode = Integer.getInteger(requireView().findViewById<EditText>(R.id.editTextBarcode).text.toString())!!
