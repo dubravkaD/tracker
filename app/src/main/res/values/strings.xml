@@ -30,4 +30,6 @@
     <string name="pick_image">Pick image</string>
     <string name="save">Save</string>
     <string name="picked_image">Picked Image</string>
+    <string name="user">User</string>
+    <string name="product">Product</string>
 </resources>
