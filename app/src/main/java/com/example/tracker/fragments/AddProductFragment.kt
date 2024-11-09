@@ -16,12 +16,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.productorigintracker.models.Product
-import com.example.productorigintracker.models.User
+import com.example.tracker.models.Product
+import com.example.tracker.models.User
 import com.example.tracker.R
 import com.example.tracker.util.enums.Category
 import com.example.tracker.util.enums.Country
-import com.google.android.material.internal.ManufacturerUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase

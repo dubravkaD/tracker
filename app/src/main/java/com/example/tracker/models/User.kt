@@ -1,15 +1,20 @@
-package com.example.productorigintracker.models
+package com.example.tracker.models
 
-class User {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-    private lateinit var username:String
-    private lateinit var email:String
-    private lateinit var uid:String
+@Parcelize
+data class User(
+    var username: String? = null,
+    var email: String? = null,
+    var uid: String? = null
+) : Parcelable {
 
-    constructor(){}
-    constructor(username:String, email:String, uid:String){
-        this.username = username
-        this.email = email
-        this.uid = uid
-    }
+
+//    constructor() : this() {}
+//    constructor(username:String, email:String, uid:String) : this() {
+//        this.username = username
+//        this.email = email
+//        this.uid = uid
+//    }
 }

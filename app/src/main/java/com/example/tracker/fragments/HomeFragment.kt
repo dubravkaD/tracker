@@ -7,16 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.productorigintracker.adapters.ProductAdapter
-import com.example.productorigintracker.models.Product
-import com.example.productorigintracker.models.User
+import com.example.tracker.adapters.ProductAdapter
+import com.example.tracker.models.Product
 import com.example.tracker.R
-import com.example.tracker.util.enums.Category
-import com.example.tracker.util.enums.Country
 
 class HomeFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.example.productorigintracker.adapters
+package com.example.tracker.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.productorigintracker.models.Product
-import com.example.productorigintracker.models.User
+import com.example.tracker.models.Product
 import com.example.tracker.R
 
 class ProductAdapter(val context: Context, var productList: ArrayList<Product>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

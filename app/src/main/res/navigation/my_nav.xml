@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_homeFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.example.tracker.models.Product" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -50,6 +53,9 @@
 <!--            android:name="productFromMain"-->
 <!--            app:argType="string"-->
 <!--            android:defaultValue="Product1" />-->
+        <argument
+            android:name="product"
+            app:argType="com.example.tracker.models.Product" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
