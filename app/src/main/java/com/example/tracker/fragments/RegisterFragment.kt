@@ -1,5 +1,6 @@
 package com.example.tracker.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +11,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.example.tracker.MainActivity
 import com.example.tracker.R
+import com.example.tracker.models.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterFragment : Fragment() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var userRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,6 +29,9 @@ class RegisterFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_register, container, false)
+
+        auth = FirebaseAuth.getInstance()
+        userRef = FirebaseDatabase.getInstance().getReference("users")
 
         val login = view.findViewById<TextView>(R.id.tvLogin)
         val register = view.findViewById<Button>(R.id.btnRegister)
@@ -41,7 +53,17 @@ class RegisterFragment : Fragment() {
         return view
     }
 
-    private fun register(email:String,pass:String){
-
+    private fun register(email:String,pass:String,username:String){
+        auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener {
+            if (it.isSuccessful){
+                userRef.child(auth.currentUser?.uid!!).setValue(User(username,email,auth.currentUser?.uid!!))
+                Toast.makeText(requireContext(),"Register",Toast.LENGTH_LONG).show()
+                this.activity?.finish()
+                val intent = Intent(this.context, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }.addOnFailureListener {
+            Toast.makeText(requireContext(),"Failed Register", Toast.LENGTH_LONG).show()
+        }
     }
 }
