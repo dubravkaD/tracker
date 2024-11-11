@@ -14,12 +14,25 @@ import com.example.tracker.adapters.ProductAdapter
 import com.example.tracker.models.Product
 import com.example.tracker.R
 import com.example.tracker.models.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class HomeFragment : Fragment() {
 
+    private lateinit var searchButton: ImageButton
+    private lateinit var searchEditText: EditText
+    
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
     private lateinit var productList: ArrayList<Product>
+    
+    private lateinit var productRef: DatabaseReference
+    private lateinit var storageRef: StorageReference
+    private lateinit var userRef: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,45 +42,44 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        // Firebase
+        auth = FirebaseAuth.getInstance()
+        productRef = FirebaseDatabase.getInstance().getReference("products")
+        storageRef = FirebaseStorage.getInstance().getReference("product_images")
+        userRef = FirebaseDatabase.getInstance().getReference("users")
+
+        // Product List
         productList = ArrayList<Product>()
         val user = User("d", "d@d", "cjghc463ufb458")
         val product1 = Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food")
         productList.add(product1)
         productList.add(Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food"))
         productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
+        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
+        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
+        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
+        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
+        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
+        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
         productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
 
-
+        // RecyclerView
         adapter = ProductAdapter(view.context,view, productList)
         recyclerView = view.findViewById(R.id.rvProducts)
         recyclerView.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
-//        recyclerView = view.findViewById(R.id.rvProduct)
-        val searchEditText = view.findViewById<EditText>(R.id.searchEditText).text.toString()
-        val searchButton = view.findViewById<ImageButton>(R.id.ibSearch)
+        // Search
+        searchEditText = view.findViewById(R.id.searchEditText)
+        searchEditText.text.clear()
+        searchButton = view.findViewById(R.id.ibSearch)
 
         searchButton.setOnClickListener {
-
+            val query = searchEditText.text.toString()
+            adapter.filter(query)
         }
-//        val user = User("d","d@d","1654crt")
-//        val product = Product("1", user,"product 1","m1",Country.SERBIA.toString(),"5616fyt",Category.FOOD.toString(),"drawable/baseline_home_24.xml")
-//        productList.add(product)
-//
-//        productAdapter = ProductAdapter(this.requireContext(),productList)
-//        recyclerView.layoutManager = LinearLayoutManager(this.context)
-//        recyclerView.adapter = productAdapter
-//
-//        searchEditText.addTextChangedListener { text ->
-//            productAdapter.filter(text.toString())
-//        }
+
         return view
     }
 

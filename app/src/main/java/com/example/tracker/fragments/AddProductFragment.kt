@@ -122,6 +122,7 @@ class AddProductFragment : Fragment() {
         saveButton.setOnClickListener {
             save()
         }
+
         return view
     }
 

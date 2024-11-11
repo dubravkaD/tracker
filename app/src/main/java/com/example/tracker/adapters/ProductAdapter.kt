@@ -58,13 +58,9 @@ class ProductAdapter(val context: Context, val view: View, var productList: Arra
     }
 
     fun filter(name:String){
-        productList = if (name.isEmpty()){
-            productList
-        } else ({
-            productList.filter{ it.name?.contains(name,ignoreCase = true) == true }
-
-        }) as ArrayList<Product>
-
-        notifyDataSetChanged()
+        if(name.isNotEmpty()){
+            productList = productList.filter { it.name?.contains(name, ignoreCase = true) == true } as ArrayList<Product>
+            notifyDataSetChanged()
+        }
     }
 }
