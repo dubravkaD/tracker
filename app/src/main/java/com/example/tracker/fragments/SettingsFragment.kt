@@ -73,10 +73,7 @@ class SettingsFragment : Fragment() {
         val userRef = FirebaseDatabase.getInstance().getReference("users")
         userRef.child(auth.currentUser?.uid!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val username = snapshot.getValue(User::class.java)!!.username
-                val email = snapshot.getValue(User::class.java)!!.email
-                val uid = snapshot.getValue(User::class.java)!!.uid
-                val u = User(username,email,uid)
+                val u = snapshot.getValue(User::class.java)!!
                 callback.onDataReceived(u)
                 Log.i("snapshot",u.toString())
             }

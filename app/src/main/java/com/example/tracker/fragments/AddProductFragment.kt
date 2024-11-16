@@ -21,9 +21,13 @@ import com.example.tracker.models.User
 import com.example.tracker.R
 import com.example.tracker.util.enums.Category
 import com.example.tracker.util.enums.Country
+import com.example.tracker.util.interfaces.UserCallback
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -33,7 +37,7 @@ class AddProductFragment : Fragment() {
     private lateinit var category: String
     private lateinit var name : String
     private lateinit var manufacturer : String
-    private lateinit var user : User
+    private lateinit var barcode: String
 
     private lateinit var editTextName : EditText
     private lateinit var editTextManufacturer : EditText
@@ -45,7 +49,6 @@ class AddProductFragment : Fragment() {
     private lateinit var adapterCountry: ArrayAdapter<String>
     private lateinit var adapterCategory: ArrayAdapter<String>
 
-    private var barcode : Int = 0
     val countryList = enumValues<Country>().map { it.displayName }
     val categoryList = enumValues<Category>().map { it.displayName }
 
@@ -123,22 +126,32 @@ class AddProductFragment : Fragment() {
         userRef = FirebaseDatabase.getInstance().getReference("users")
         auth = FirebaseAuth.getInstance()
 
-//        val uid = auth.currentUser?.uid
-//        user = userRef.child(uid).get()
-
-        //
         saveButton = view.findViewById(R.id.btnSave)
         editTextName = view.findViewById(R.id.editTextName)
         editTextManufacturer = view.findViewById(R.id.editTextManufacturer)
         editTextBarcode = view.findViewById(R.id.editTextBarcode)
 
+        // adding product to database
         saveButton.setOnClickListener {
             name = editTextName.text.toString()
             manufacturer = editTextManufacturer.text.toString()
-            val barText = editTextBarcode.text.toString()
+            barcode = editTextBarcode.text.toString()
 //            Log.i("Saved values","name $name man $manufacturer bartext $barText country $country category $category")
-            Log.i("Barcode length", Integer.parseInt(barText).toString())
+//            Log.i("Barcode length", barcodeText.length)
 //            save()
+            getUser(object : UserCallback {
+                override fun onDataReceived(u: User?) {
+                    val user = u
+                    if (user != null) {
+                        save(name,manufacturer,barcode,user)
+                    }
+                    editTextName.text.clear()
+                    editTextManufacturer.text.clear()
+                    editTextBarcode.text.clear()
+                    spinnerCountry.setSelection(0)
+                    spinnerCategory.setSelection(0)
+                }
+            })
         }
 
         return view
@@ -164,15 +177,12 @@ class AddProductFragment : Fragment() {
     }
 
     // problem with barcode NullPointerException
-    private fun save() {
-        name = requireView().findViewById<EditText>(R.id.editTextName).text.toString()
-        barcode = Integer.getInteger(requireView().findViewById<EditText>(R.id.editTextBarcode).text.toString())!! ?: 5
-        manufacturer = requireView().findViewById<EditText>(R.id.editTextManufacturer).text.toString()
+    private fun save(name:String,manufacturer:String,barcode:String,user:User) {
 
         Log.i("AddProductName", name)
-        Log.i("AddProductBarcode", barcode.toString())
+        Log.i("AddProductBarcode", barcode)
         Log.i("AddProductManufacturer", manufacturer)
-        if (name.isNotEmpty() && manufacturer.isNotEmpty() && barcode!=0){
+        if (name.isNotEmpty() && manufacturer.isNotEmpty() && barcode.isNotEmpty()){
 
             val id = productRef.push().key!!
 
@@ -196,5 +206,21 @@ class AddProductFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(),"Failed add product, $name $manufacturer $barcode", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun getUser(callback: UserCallback){
+        val userRef = FirebaseDatabase.getInstance().getReference("users")
+        userRef.child(auth.currentUser?.uid!!).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val u = snapshot.getValue(User::class.java)!!
+                callback.onDataReceived(u)
+                Log.i("snapshot",u.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("getUser","Failed to read value",error.toException())
+            }
+
+        })
     }
 }
