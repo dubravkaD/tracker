@@ -1,6 +1,7 @@
 package com.example.tracker.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,11 @@ import com.example.tracker.models.Product
 import com.example.tracker.R
 import com.example.tracker.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -48,27 +52,47 @@ class HomeFragment : Fragment() {
         storageRef = FirebaseStorage.getInstance().getReference("product_images")
         userRef = FirebaseDatabase.getInstance().getReference("users")
 
+        val list = ArrayList<Product>()
+
         // Product List
-        productList = ArrayList<Product>()
-        val user = User("d", "d@d", "cjghc463ufb458")
-        val product1 = Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food")
-        productList.add(product1)
-        productList.add(Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
-        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
+//        productList = ArrayList<Product>()
+//        val user = User("d", "d@d", "cjghc463ufb458")
+//        val product1 = Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food")
+//        productList.add(product1)
+//        productList.add(Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food"))
+//        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
+//        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
 
         // RecyclerView
-        adapter = ProductAdapter(view.context,view, productList)
+        adapter = ProductAdapter(view.context,view, list)
         recyclerView = view.findViewById(R.id.rvProducts)
         recyclerView.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+
+
+        // Products from firebase
+        productRef.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                list.clear()
+                for (productSnapshot in snapshot.children){
+                    val prod = productSnapshot.getValue(Product::class.java)
+                    list.add(prod!!)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("getUser","Failed to read value",error.toException())
+            }
+
+        })
 
         // Search
         searchEditText = view.findViewById(R.id.searchEditText)

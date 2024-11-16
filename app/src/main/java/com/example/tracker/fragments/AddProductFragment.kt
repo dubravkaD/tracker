@@ -176,7 +176,6 @@ class AddProductFragment : Fragment() {
         }
     }
 
-    // problem with barcode NullPointerException
     private fun save(name:String,manufacturer:String,barcode:String,user:User) {
 
         Log.i("AddProductName", name)
