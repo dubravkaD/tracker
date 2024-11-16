@@ -34,6 +34,17 @@ class AddProductFragment : Fragment() {
     private lateinit var name : String
     private lateinit var manufacturer : String
     private lateinit var user : User
+
+    private lateinit var editTextName : EditText
+    private lateinit var editTextManufacturer : EditText
+    private lateinit var editTextBarcode : EditText
+    private lateinit var saveButton: Button
+
+    private lateinit var spinnerCountry: Spinner
+    private lateinit var spinnerCategory: Spinner
+    private lateinit var adapterCountry: ArrayAdapter<String>
+    private lateinit var adapterCategory: ArrayAdapter<String>
+
     private var barcode : Int = 0
     val countryList = enumValues<Country>().map { it.displayName }
     val categoryList = enumValues<Category>().map { it.displayName }
@@ -54,13 +65,13 @@ class AddProductFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_product, container, false)
 
         // SPINNERS
-        val spinnerCountry: Spinner = view.findViewById(R.id.spinnerCountry)
-        val spinnerCategory: Spinner = view.findViewById(R.id.spinnerCategory)
+        spinnerCountry = view.findViewById(R.id.spinnerCountry)
+        spinnerCategory= view.findViewById(R.id.spinnerCategory)
 
-        val adapterCountry = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, countryList)
+        adapterCountry = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, countryList)
         adapterCountry.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        val adapterCategory = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, categoryList)
+        adapterCategory = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, categoryList)
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         spinnerCountry.adapter = adapterCountry
@@ -110,17 +121,24 @@ class AddProductFragment : Fragment() {
         productRef = FirebaseDatabase.getInstance().getReference("products")
         storageRef = FirebaseStorage.getInstance().getReference("product_images")
         userRef = FirebaseDatabase.getInstance().getReference("users")
+        auth = FirebaseAuth.getInstance()
 
-        // get user from prev
-//        auth = FirebaseAuth.getInstance()
 //        val uid = auth.currentUser?.uid
 //        user = userRef.child(uid).get()
 
-        // BUTTONS
-        val saveButton = view.findViewById<Button>(R.id.btnSave)
+        //
+        saveButton = view.findViewById(R.id.btnSave)
+        editTextName = view.findViewById(R.id.editTextName)
+        editTextManufacturer = view.findViewById(R.id.editTextManufacturer)
+        editTextBarcode = view.findViewById(R.id.editTextBarcode)
 
         saveButton.setOnClickListener {
-            save()
+            name = editTextName.text.toString()
+            manufacturer = editTextManufacturer.text.toString()
+            val barText = editTextBarcode.text.toString()
+//            Log.i("Saved values","name $name man $manufacturer bartext $barText country $country category $category")
+            Log.i("Barcode length", Integer.parseInt(barText).toString())
+//            save()
         }
 
         return view
@@ -144,9 +162,11 @@ class AddProductFragment : Fragment() {
             Log.i("imagePicker ",uri.toString())
         }
     }
+
+    // problem with barcode NullPointerException
     private fun save() {
         name = requireView().findViewById<EditText>(R.id.editTextName).text.toString()
-        barcode = Integer.getInteger(requireView().findViewById<EditText>(R.id.editTextBarcode).text.toString())!!
+        barcode = Integer.getInteger(requireView().findViewById<EditText>(R.id.editTextBarcode).text.toString())!! ?: 5
         manufacturer = requireView().findViewById<EditText>(R.id.editTextManufacturer).text.toString()
 
         Log.i("AddProductName", name)

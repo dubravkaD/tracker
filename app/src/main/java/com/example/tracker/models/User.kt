@@ -9,12 +9,9 @@ data class User(
     var email: String? = null,
     var uid: String? = null
 ) : Parcelable {
-
-
-//    constructor() : this() {}
-//    constructor(username:String, email:String, uid:String) : this() {
-//        this.username = username
-//        this.email = email
-//        this.uid = uid
-//    }
+    
+    constructor() : this(null,null,null) {}
+    override fun toString(): String {
+        return "User(username=$username, email=$email, uid=$uid)"
+    }
 }

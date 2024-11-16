@@ -14,44 +14,10 @@ data class Product(
     var category: String? = null,
     var image: String? = null
 ) : Parcelable {
+    constructor(): this(null,null,null,null,null,null,null,null){}
 
-
-//    constructor() : this() {}
-//    constructor(
-//        id: String,
-//        name: String,
-//        manufacturer: String,
-//        countryOfOrigin: String,
-//        barcode: String,
-//        category: String
-//    ) : this() {
-//        this.id = id
-//        this.name = name
-//        this.manufacturer = manufacturer
-//        this.countryOfOrigin = countryOfOrigin
-//        this.barcode = barcode
-//        this.category = category
-//    }
-
-//    constructor(
-//        id: String,
-//        user: User,
-//        name: String,
-//        manufacturer: String,
-//        countryOfOrigin: String,
-//        barcode: String,
-//        category: String,
-//        image: String
-//    ) : this() {
-//        this.id = id
-//        this.user = user
-//        this.name = name
-//        this.manufacturer = manufacturer
-//        this.countryOfOrigin = countryOfOrigin
-//        this.barcode = barcode
-//        this.category = category
-//        this.image = image
-//    }
-
+    override fun toString(): String {
+        return "Product(user=${user.toString()}, name=$name, manufacturer=$manufacturer, countryOfOrigin=$countryOfOrigin, id=$id, barcode=$barcode, category=$category, image=$image)"
+    }
 
 }

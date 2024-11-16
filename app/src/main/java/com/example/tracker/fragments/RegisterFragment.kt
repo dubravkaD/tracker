@@ -2,6 +2,7 @@ package com.example.tracker.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,11 @@ import com.example.tracker.MainActivity
 import com.example.tracker.R
 import com.example.tracker.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 
 class RegisterFragment : Fragment() {
 
@@ -42,7 +46,10 @@ class RegisterFragment : Fragment() {
             val pass = view.findViewById<EditText>(R.id.edtPasswordR).text.toString()
             val confirmPass = view.findViewById<EditText>(R.id.edtCPassword).text.toString()
             if(pass == confirmPass){
-                Toast.makeText(view.context,"Registered",Toast.LENGTH_LONG).show()
+                register(email,pass,username)
+//                Toast.makeText(view.context,"Registered",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(view.context,"Password does not match confirmed",Toast.LENGTH_LONG).show()
             }
         }
 
@@ -54,15 +61,25 @@ class RegisterFragment : Fragment() {
     }
 
     private fun register(email:String,pass:String,username:String){
-        auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener {
-            if (it.isSuccessful){
+        auth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener { task->
+            if (task.isSuccessful){
+                Log.i("Auth successful","values")
+
                 userRef.child(auth.currentUser?.uid!!).setValue(User(username,email,auth.currentUser?.uid!!))
+
+                val user = Firebase.auth.currentUser
+                val updatedProfile = userProfileChangeRequest { displayName = username }
+                user!!.updateProfile(updatedProfile)
+
                 Toast.makeText(requireContext(),"Register",Toast.LENGTH_LONG).show()
                 this.activity?.finish()
                 val intent = Intent(this.context, MainActivity::class.java)
                 startActivity(intent)
+            } else {
+                Log.e("task error","SignIn",task.exception)
             }
         }.addOnFailureListener {
+            Log.e("firebase auth", it.message.toString())
             Toast.makeText(requireContext(),"Failed Register", Toast.LENGTH_LONG).show()
         }
     }

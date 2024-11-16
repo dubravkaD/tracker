@@ -40,13 +40,14 @@ class LoginFragment : Fragment() {
         login.setOnClickListener {
             val email = edE.text.toString()
             val pass = edP.text.toString()
-            Log.i("LoginFragmentEmail", email)
-            Log.i("LoginFragmentPassword", pass)
+//            Log.i("LoginFragmentEmail", email)
+//            Log.i("LoginFragmentPassword", pass)
             if (email.isNotEmpty() && pass.isNotEmpty()){
-                Toast.makeText(view.context,"Login",Toast.LENGTH_LONG).show()
-                this.activity?.finish()
-                val intent = Intent(this.context, MainActivity::class.java)
-                startActivity(intent)
+                login(email, pass)
+//                Toast.makeText(view.context,"Login",Toast.LENGTH_LONG).show()
+//                this.activity?.finish()
+//                val intent = Intent(this.context, MainActivity::class.java)
+//                startActivity(intent)
             } else {
                 Toast.makeText(view.context,"Failed Log in, $email $pass", Toast.LENGTH_LONG).show()
             }

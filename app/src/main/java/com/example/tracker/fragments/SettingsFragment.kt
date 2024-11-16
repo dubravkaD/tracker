@@ -2,6 +2,7 @@ package com.example.tracker.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.tracker.MainActivity
 import com.example.tracker.MainActivity2
 import com.example.tracker.R
 import com.example.tracker.models.User
+import com.example.tracker.util.interfaces.UserCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,8 +25,12 @@ import com.google.firebase.database.ValueEventListener
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var user:User
-    private lateinit var auth:FirebaseAuth
+    private lateinit var tvUsername: TextView
+    private lateinit var cvLogout: CardView
+
+    private var user:User?=null
+
+    private var auth:FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,37 +40,52 @@ class SettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        auth = FirebaseAuth.getInstance()
+        tvUsername = view.findViewById(R.id.tvUsername)
+        cvLogout = view.findViewById(R.id.cvLogout)
 
-        val tvUsername = view.findViewById<TextView>(R.id.tvUsername)
-        tvUsername.text = "Username"
+        setUsername(auth.currentUser?.displayName!!)
 
-        val cvLogut = view.findViewById<CardView>(R.id.cvLogout)
-
-        cvLogut.setOnClickListener{
-            this.activity?.finish()
-            val intent = Intent(this.context, MainActivity2::class.java)
-            startActivity(intent)
-            Toast.makeText(view.context, "Log out", Toast.LENGTH_LONG).show()
+        cvLogout.setOnClickListener{
+            logout()
+            Toast.makeText(view.context, "Logout", Toast.LENGTH_LONG).show()
         }
 
         return view
     }
 
-    private fun getUser():User?{
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        getUser(object : UserCallback {
+            override fun onDataReceived(u: User?) {
+                user = u
+                Log.i("userCallback",user.toString()) // working
+            }
+        })
+        Log.i("getUser",user.toString()) // null
+    }
+
+    private fun setUsername(username:String){
+        tvUsername.text=username
+    }
+
+    private fun getUser(callback: UserCallback){
         val userRef = FirebaseDatabase.getInstance().getReference("users")
-        var user:User? = null
         userRef.child(auth.currentUser?.uid!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                user = snapshot.getValue(User::class.java)
+                val username = snapshot.getValue(User::class.java)!!.username
+                val email = snapshot.getValue(User::class.java)!!.email
+                val uid = snapshot.getValue(User::class.java)!!.uid
+                val u = User(username,email,uid)
+                callback.onDataReceived(u)
+                Log.i("snapshot",u.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Log.w("getUser","Failed to read value",error.toException())
             }
 
         })
-        return user
     }
 
     private fun logout(){
