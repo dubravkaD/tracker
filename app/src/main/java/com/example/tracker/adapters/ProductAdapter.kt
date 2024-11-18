@@ -1,7 +1,9 @@
 package com.example.tracker.adapters
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.models.Product
 import com.example.tracker.R
 import com.example.tracker.fragments.HomeFragmentDirections
+import com.google.firebase.storage.FirebaseStorage
 
 class ProductAdapter(val context: Context, val view: View, var productList: ArrayList<Product>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    var storageRef = FirebaseStorage.getInstance().getReference("product_images")
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false)
         return ProductViewHolder(view)
@@ -31,7 +37,13 @@ class ProductAdapter(val context: Context, val view: View, var productList: Arra
         if(current.image == null){
             viewHolder.productImage.setImageResource(R.drawable.baseline_map_24)
         } else {
-            viewHolder.productImage.setImageURI(Uri.parse(current.image))
+            storageRef.child("/"+current.id).getBytes(10*1024*1024).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeByteArray(it,0,it.size)
+                viewHolder.productImage.setImageBitmap(bitmap)
+            }.addOnFailureListener {
+                Log.w("Firebase Storage","Cannot retrieve image from storage",it)
+            }
+//            viewHolder.productImage.setImageURI(Uri.parse(current.image))
         }
         viewHolder.productName.text = current.name
 //        viewHolder.productImage.text = current.image

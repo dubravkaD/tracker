@@ -1,8 +1,10 @@
 package com.example.tracker.fragments
 
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,6 +88,15 @@ class ProductDetailsFragment : Fragment() {
         storageRef = FirebaseStorage.getInstance().getReference("product_images")
         userRef = FirebaseDatabase.getInstance().getReference("users")
         favoritesRef = FirebaseDatabase.getInstance().getReference("favorites")
+
+        if(product.id != null && product.image!=null){
+            storageRef.child("/"+product.id).getBytes(10*1024*1024).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeByteArray(it,0,it.size)
+                ivProductImage.setImageBitmap(bitmap)
+            }.addOnFailureListener {
+                Log.w("Firebase Storage","Cannot retrieve image from storage",it)
+            }
+        }
 
         // Favorites
 //        ivAddFavorites.setOnClickListener {
