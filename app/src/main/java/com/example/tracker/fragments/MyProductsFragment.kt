@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.R
@@ -52,6 +53,7 @@ class MyProductsFragment : Fragment() {
         // RecyclerView
         adapter = MyProductsAdapter(view.context,view, mProductList) { product ->
 //            Log.i("MyProducts", "Selected product $product") // working
+            Navigation.findNavController(view).navigate(MyProductsFragmentDirections.actionMyProductsFragmentToUpdateFragment(product))
         }
         recyclerView = view.findViewById(R.id.rvMyProducts)
         recyclerView.layoutManager =

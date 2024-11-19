@@ -77,6 +77,21 @@
         <action
             android:id="@+id/action_myProductsFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_myProductsFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.example.tracker.fragments.UpdateFragment"
+        android:label="fragment_update"
+        tools:layout="@layout/fragment_update" >
+        <action
+            android:id="@+id/action_updateFragment_to_myProductsFragment"
+            app:destination="@id/myProductsFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.example.tracker.models.Product" />
     </fragment>
 
 </navigation>

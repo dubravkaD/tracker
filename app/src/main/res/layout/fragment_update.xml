@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UpdateFragment"
+    android:layout_marginHorizontal="35dp"
+    android:layout_marginVertical="15dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/updateEdtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Name"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
+            android:id="@+id/updateEdtManufacturer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Manufacturer"
+            android:layout_marginTop="10dp"
+            android:hint="@string/manufacturer"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/updateEdtBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Barcode"
+            android:hint="@string/barcode"
+            android:inputType="number"
+            android:layout_marginTop="10dp"/>
+
+        <Spinner
+            android:id="@+id/updateSpinnerCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
+
+        <Spinner
+            android:id="@+id/updateSpinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/updateBtnPick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/pick_image"/>
+
+        <ImageView
+            android:id="@+id/updateIvPick"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/picked_image"
+            android:src="@drawable/baseline_map_24"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/updateBtnUpdate"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/update"/>
+</LinearLayout>
