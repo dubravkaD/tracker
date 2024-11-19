@@ -143,13 +143,14 @@ class AddProductFragment : Fragment() {
                 override fun onDataReceived(u: User?) {
                     val user = u
                     if (user != null) {
-                        save(name,manufacturer,barcode,user)
+//                        Log.i("Save","Values for category and country before save $category  $country")
+                        save(name,manufacturer,barcode,user,category,country)
+                        editTextName.text.clear()
+                        editTextManufacturer.text.clear()
+                        editTextBarcode.text.clear()
+                        spinnerCountry.setSelection(0)
+                        spinnerCategory.setSelection(0)
                     }
-                    editTextName.text.clear()
-                    editTextManufacturer.text.clear()
-                    editTextBarcode.text.clear()
-                    spinnerCountry.setSelection(0)
-                    spinnerCategory.setSelection(0)
                 }
             })
         }
@@ -176,11 +177,12 @@ class AddProductFragment : Fragment() {
         }
     }
 
-    private fun save(name:String,manufacturer:String,barcode:String,user:User) {
+    private fun save(name:String,manufacturer:String,barcode:String,user:User,categoryString: String,countryString: String) {
 
-        Log.i("AddProductName", name)
-        Log.i("AddProductBarcode", barcode)
-        Log.i("AddProductManufacturer", manufacturer)
+//        Log.i("Values for category and country in save","$categoryString  $countryString")
+//        Log.i("AddProductName", name)
+//        Log.i("AddProductBarcode", barcode)
+//        Log.i("AddProductManufacturer", manufacturer)
         if (name.isNotEmpty() && manufacturer.isNotEmpty() && barcode.isNotEmpty()){
 
             val id = productRef.push().key!!
@@ -190,7 +192,7 @@ class AddProductFragment : Fragment() {
                     task.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
                         Toast.makeText(requireContext(), "Image stored successfully",Toast.LENGTH_SHORT).show()
                         val imageURL = url.toString()
-                        val p = Product(id,user,name,manufacturer,country,barcode.toString(),category,imageURL)
+                        val p = Product(id,user,name,manufacturer,countryString,barcode,categoryString,imageURL)
 
                         productRef.child(id).setValue(p).addOnSuccessListener {
                             Toast.makeText(requireContext(), "Product successfully added",Toast.LENGTH_SHORT).show()
@@ -217,7 +219,7 @@ class AddProductFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("getUser","Failed to read value",error.toException())
+                Log.e("getUser","Failed to read value",error.toException())
             }
 
         })
