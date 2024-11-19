@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.R
 import com.example.tracker.models.Product
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 
 class MyProductsAdapter(
@@ -67,8 +68,6 @@ class MyProductsAdapter(
         val barcode = itemView.findViewById<TextView>(R.id.tvBarcode)
         val category = itemView.findViewById<TextView>(R.id.tvCategory)
 
-//        val cardView = itemView.findViewById<CardView>(R.id.cvProductItem)
-
         init {
             itemView.setOnLongClickListener {
                 showPopupMenu(itemView.context,it,productList[adapterPosition])
@@ -90,7 +89,7 @@ class MyProductsAdapter(
                     }
 
                     R.id.deleteProduct -> {
-                        showDialog()
+                        showDialog(product)
 //                        Toast.makeText(itemView.context,"Delete",Toast.LENGTH_LONG).show()
                         true
                     }
@@ -102,19 +101,20 @@ class MyProductsAdapter(
             popupMenu.show()
         }
 
-        private fun showDialog() {
+        private fun showDialog(product: Product) {
             val builder = AlertDialog.Builder(itemView.context)
 
             builder.setTitle("Delete product")
             builder.setMessage("Do you want to delete this product")
 
             builder.setPositiveButton("OK") { dialog, which ->
-                Toast.makeText(itemView.context, "OK clicked", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(itemView.context, "OK clicked", Toast.LENGTH_SHORT).show()
+                deleteProduct(product)
                 dialog.dismiss()
             }
 
             builder.setNegativeButton("Cancel") { dialog, which ->
-                Toast.makeText(itemView.context, "Cancel clicked", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(itemView.context, "Cancel clicked", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
 
@@ -122,6 +122,36 @@ class MyProductsAdapter(
             dialog.show()
         }
 
+        private fun deleteProduct(product: Product){
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION){
+                productList.removeAt(position)
+                notifyItemRemoved(position)
+
+                deleteFromDatabase(product)
+                deleteFromStorage(product)
+            } else {
+                Log.w("Adapter position", "position is not valid $position")
+            }
+        }
+
+        private fun deleteFromDatabase(product: Product){
+            val productRef = FirebaseDatabase.getInstance().getReference("products")
+            product.id?.let { productRef.child(it).removeValue().addOnSuccessListener {
+                Toast.makeText(context, "Product deleted successfully", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener { e->
+                Toast.makeText(context, "Error deleting product", Toast.LENGTH_SHORT).show()
+                Log.e("Delete", "Error deleting product: ${e.message}")
+            } }
+        }
+
+        private fun deleteFromStorage(product: Product){
+            storageRef.child("/"+product.id).delete().addOnSuccessListener {
+                Log.i("Delete Product Image","Success")
+            }.addOnFailureListener { e ->
+                Log.e("Delete", "Error deleting image: ${e.message}")
+            }
+        }
     }
 
 }
