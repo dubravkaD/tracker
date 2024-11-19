@@ -50,13 +50,15 @@ class MyProductsFragment : Fragment() {
         mProductList = ArrayList<Product>()
 
         // RecyclerView
-        adapter = MyProductsAdapter(view.context,view, mProductList)
+        adapter = MyProductsAdapter(view.context,view, mProductList) { product ->
+//            Log.i("MyProducts", "Selected product $product") // working
+        }
         recyclerView = view.findViewById(R.id.rvMyProducts)
         recyclerView.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
 
-        // Products from firebase
+        // Products from Firebase
         productRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mProductList.clear()
@@ -74,6 +76,7 @@ class MyProductsFragment : Fragment() {
             }
 
         })
+
         return view
     }
 

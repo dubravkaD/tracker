@@ -11,18 +11,25 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.R
 import com.example.tracker.models.Product
 import com.google.firebase.storage.FirebaseStorage
 
-class MyProductsAdapter(val context: Context, val view: View, private var productList: ArrayList<Product>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyProductsAdapter(
+    val context: Context,
+    val view: View,
+    private var productList: ArrayList<Product>,
+    private val productSelected: (Product) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var storageRef = FirebaseStorage.getInstance().getReference("product_images")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false)
+        val view: View =
+            LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false)
         return ProductViewHolder(view)
     }
 
@@ -50,10 +57,9 @@ class MyProductsAdapter(val context: Context, val view: View, private var produc
         viewHolder.barcode.text = current.barcode
         viewHolder.category.text = current.category
 
-        viewHolder.item
     }
 
-    class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val productImage = itemView.findViewById<ImageView>(R.id.ivImage)
         val productName = itemView.findViewById<TextView>(R.id.tvName)
         val manufacturer = itemView.findViewById<TextView>(R.id.tvManufacturer)
@@ -63,18 +69,29 @@ class MyProductsAdapter(val context: Context, val view: View, private var produc
 
 //        val cardView = itemView.findViewById<CardView>(R.id.cvProductItem)
 
-        val item = itemView.setOnLongClickListener {
-            val popupMenu = PopupMenu(itemView.context,it)
+        init {
+            itemView.setOnLongClickListener {
+                showPopupMenu(itemView.context,it,productList[adapterPosition])
+                true
+            }
+        }
 
-            MenuInflater(itemView.context).inflate(R.menu.options_menu,popupMenu.menu)
+        private fun showPopupMenu(context: Context, view: View, product: Product) {
+
+            val popupMenu = PopupMenu(context, view)
+
+            MenuInflater(context).inflate(R.menu.options_menu, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
-                when(menuItem.itemId){
+                when (menuItem.itemId) {
                     R.id.updateProduct -> {
-                        Toast.makeText(itemView.context,"Update",Toast.LENGTH_LONG).show()
+                        productSelected(product)
+//                        Toast.makeText(itemView.context, "Update", Toast.LENGTH_LONG).show()
                         true
                     }
+
                     R.id.deleteProduct -> {
-                        Toast.makeText(itemView.context,"Delete",Toast.LENGTH_LONG).show()
+                        showDialog()
+//                        Toast.makeText(itemView.context,"Delete",Toast.LENGTH_LONG).show()
                         true
                     }
 
@@ -83,7 +100,28 @@ class MyProductsAdapter(val context: Context, val view: View, private var produc
             }
 
             popupMenu.show()
-            true
         }
+
+        private fun showDialog() {
+            val builder = AlertDialog.Builder(itemView.context)
+
+            builder.setTitle("Delete product")
+            builder.setMessage("Do you want to delete this product")
+
+            builder.setPositiveButton("OK") { dialog, which ->
+                Toast.makeText(itemView.context, "OK clicked", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("Cancel") { dialog, which ->
+                Toast.makeText(itemView.context, "Cancel clicked", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+        }
+
     }
+
 }
