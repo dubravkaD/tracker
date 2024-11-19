@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.example.tracker.MainActivity
 import com.example.tracker.MainActivity2
 import com.example.tracker.R
@@ -27,6 +28,7 @@ class SettingsFragment : Fragment() {
 
     private lateinit var tvUsername: TextView
     private lateinit var cvLogout: CardView
+    private lateinit var cvMyProducts: CardView
 
     private var user:User?=null
 
@@ -42,8 +44,13 @@ class SettingsFragment : Fragment() {
 
         tvUsername = view.findViewById(R.id.tvUsername)
         cvLogout = view.findViewById(R.id.cvLogout)
+        cvMyProducts = view.findViewById(R.id.cvMyProducts)
 
         setUsername(auth.currentUser?.displayName!!)
+
+        cvMyProducts.setOnClickListener {
+            Navigation.findNavController(view).navigate(SettingsFragmentDirections.actionSettingsFragmentToMyProductsFragment())
+        }
 
         cvLogout.setOnClickListener{
             logout()

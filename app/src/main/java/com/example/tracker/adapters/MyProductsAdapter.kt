@@ -2,24 +2,24 @@ package com.example.tracker.adapters
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tracker.models.Product
 import com.example.tracker.R
-import com.example.tracker.fragments.HomeFragmentDirections
+import com.example.tracker.models.Product
 import com.google.firebase.storage.FirebaseStorage
 
-class ProductAdapter(val context: Context, val view: View, var productList: ArrayList<Product>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyProductsAdapter(val context: Context, val view: View, private var productList: ArrayList<Product>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var storageRef = FirebaseStorage.getInstance().getReference("product_images")
+    private var storageRef = FirebaseStorage.getInstance().getReference("product_images")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.product_list_item, parent, false)
@@ -34,28 +34,23 @@ class ProductAdapter(val context: Context, val view: View, var productList: Arra
         val current = productList[position]
         val viewHolder = holder as ProductViewHolder
 
-        if(current.image == null){
+        if (current.image == null) {
             viewHolder.productImage.setImageResource(R.drawable.baseline_map_24)
         } else {
-            storageRef.child("/"+current.id).getBytes(10*1024*1024).addOnSuccessListener {
-                val bitmap = BitmapFactory.decodeByteArray(it,0,it.size)
+            storageRef.child("/" + current.id).getBytes(10 * 1024 * 1024).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
                 viewHolder.productImage.setImageBitmap(bitmap)
             }.addOnFailureListener {
-                Log.w("Firebase Storage","Cannot retrieve image from storage",it)
+                Log.w("Firebase Storage", "Cannot retrieve image from storage", it)
             }
-//            viewHolder.productImage.setImageURI(Uri.parse(current.image))
         }
         viewHolder.productName.text = current.name
-//        viewHolder.productImage.text = current.image
         viewHolder.manufacturer.text = current.manufacturer
         viewHolder.countryOfOrigin.text = current.countryOfOrigin
         viewHolder.barcode.text = current.barcode
         viewHolder.category.text = current.category
 
-        viewHolder.cardView.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(current)
-            Navigation.findNavController(view).navigate(action)
-        }
+        viewHolder.item
     }
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -66,15 +61,29 @@ class ProductAdapter(val context: Context, val view: View, var productList: Arra
         val barcode = itemView.findViewById<TextView>(R.id.tvBarcode)
         val category = itemView.findViewById<TextView>(R.id.tvCategory)
 
-        val cardView = itemView.findViewById<CardView>(R.id.cvProductItem)
-    }
+//        val cardView = itemView.findViewById<CardView>(R.id.cvProductItem)
 
-    fun filter(name:String){
-        if(name.isNotEmpty()){
-            productList = productList.filter { it.name?.contains(name, ignoreCase = true) == true } as ArrayList<Product>
-            notifyDataSetChanged()
+        val item = itemView.setOnLongClickListener {
+            val popupMenu = PopupMenu(itemView.context,it)
+
+            MenuInflater(itemView.context).inflate(R.menu.options_menu,popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when(menuItem.itemId){
+                    R.id.updateProduct -> {
+                        Toast.makeText(itemView.context,"Update",Toast.LENGTH_LONG).show()
+                        true
+                    }
+                    R.id.deleteProduct -> {
+                        Toast.makeText(itemView.context,"Delete",Toast.LENGTH_LONG).show()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+
+            popupMenu.show()
+            true
         }
-//        val tvResult = view.findViewById<TextView>(R.id.tvNoResult)
-//        tvResult.visibility = if(productList.isEmpty()) View.VISIBLE else View.GONE
     }
 }

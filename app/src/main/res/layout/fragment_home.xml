@@ -11,6 +11,7 @@
     android:layout_marginHorizontal="35dp"
     android:layout_marginBottom="15dp">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,6 +33,20 @@
             android:contentDescription="@string/search"
             android:src="@drawable/baseline_search_24" />
     </LinearLayout>
+
+<!--    <SearchView-->
+<!--        android:id="@+id/sv"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:iconifiedByDefault="false"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tvNoResult"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="20sp"-->
+<!--        android:text="@string/no_result"-->
+<!--        android:visibility="gone"/>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvProducts"

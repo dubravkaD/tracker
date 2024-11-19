@@ -32,4 +32,8 @@
     <string name="picked_image">Picked Image</string>
     <string name="user">User</string>
     <string name="product">Product</string>
+    <string name="no_result">No Result</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="my_products">My Products</string>
 </resources>

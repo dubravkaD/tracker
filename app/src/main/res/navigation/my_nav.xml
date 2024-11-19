@@ -64,6 +64,19 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.tracker.fragments.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_myProductsFragment"
+            app:destination="@id/myProductsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProductsFragment"
+        android:name="com.example.tracker.fragments.MyProductsFragment"
+        android:label="fragment_my_products"
+        tools:layout="@layout/fragment_my_products" >
+        <action
+            android:id="@+id/action_myProductsFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
 
 </navigation>

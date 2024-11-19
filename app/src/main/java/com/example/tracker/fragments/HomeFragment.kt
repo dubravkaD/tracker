@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.EditText
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var searchButton: ImageButton
     private lateinit var searchEditText: EditText
+    private lateinit var searchView: SearchView
     
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
@@ -95,6 +97,20 @@ class HomeFragment : Fragment() {
         })
 
         // Search
+//        searchView = view.findViewById(R.id.sv)
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                newText?.let{
+//                    adapter.filter(it)
+//                }
+//                return true
+//            }
+//
+//        })
         searchEditText = view.findViewById(R.id.searchEditText)
         searchEditText.text.clear()
         searchButton = view.findViewById(R.id.ibSearch)
