@@ -16,9 +16,11 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.tracker.R
 import com.example.tracker.models.Product
+import com.example.tracker.models.User
 import com.example.tracker.util.enums.Category
 import com.example.tracker.util.enums.Country
 import com.google.firebase.auth.FirebaseAuth
@@ -142,6 +144,10 @@ class UpdateFragment : Fragment() {
             }
         }
 
+        name = product.name.toString()
+        manufacturer = product.manufacturer.toString()
+        barcode = product.barcode.toString()
+
         editTextName.text.clear()
         editTextName.setText(product.name)
         editTextManufacturer.text.clear()
@@ -153,7 +159,25 @@ class UpdateFragment : Fragment() {
         spinnerCategory.setSelection(categoryList.indexOf(product.category))
 
         updateButton.setOnClickListener {
-
+            var countryString: String = product.countryOfOrigin.toString()
+            var categoryString :String = product.category.toString()
+            if(editTextName.text.toString() != product.name && editTextName.text.toString().isNotEmpty() && editTextName.text.toString().isNotBlank()) {
+                name = editTextName.text.toString()
+            }
+            if(editTextManufacturer.text.toString() != product.manufacturer && editTextManufacturer.text.toString().isNotEmpty() && editTextManufacturer.text.toString().isNotBlank()){
+                manufacturer = editTextManufacturer.text.toString()
+            }
+            if(editTextBarcode.text.toString() != product.barcode && editTextBarcode.text.toString().isNotEmpty() && editTextBarcode.text.toString().isNotBlank()){
+                barcode = editTextBarcode.text.toString()
+            }
+            if(country!=product.countryOfOrigin){
+                countryString = country
+            }
+            if(category!=product.category){
+                categoryString = category
+            }
+            update(name,manufacturer,barcode,categoryString,countryString)
+            Navigation.findNavController(view).navigate(UpdateFragmentDirections.actionUpdateFragmentToMyProductsFragment())
         }
 
         return view
@@ -167,8 +191,7 @@ class UpdateFragment : Fragment() {
         // For API >= 30
         val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { selectedURI ->
             selectedURI?.let {
-                val imageView = view.findViewById<ImageView>(R.id.imageViewPick)
-                imageView.setImageURI(it)
+                imageViewProduct.setImageURI(it)
                 uri = it
             }
         }
@@ -178,5 +201,45 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    private fun update(){}
+    private fun update(name:String, manufacturer:String, barcode:String, category: String, country: String){
+        Log.i("Values in update","$name $manufacturer $barcode $category $country")
+        if(uri == null){
+            val updated = mapOf<String,Any>(
+                "name" to name,
+                "manufacturer" to manufacturer,
+                "barcode" to barcode,
+                "category" to category,
+                "countryOfOrigin" to country
+            )
+            productRef.child(product.id!!).updateChildren(updated).addOnSuccessListener {
+                Log.d("Firebase Update","Data updated successfully")
+            }.addOnFailureListener { e ->
+                Log.e("Firebase Update","Error updating data ${e.message}")
+            }
+        } else {
+            storageRef.child("/"+product.id).delete().addOnSuccessListener {
+                Log.i("Delete Product Image","Success")
+                storageRef.child(product.id!!).putFile(uri!!).addOnSuccessListener { task ->
+                    task.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
+                        val imageURL = url.toString()
+                        val updated = mapOf<String,Any>(
+                            "name" to name,
+                            "manufacturer" to manufacturer,
+                            "barcode" to barcode,
+                            "category" to category,
+                            "countryOfOrigin" to country,
+                            "image" to imageURL
+                        )
+                        productRef.child(product.id!!).updateChildren(updated).addOnSuccessListener {
+                            Log.d("Firebase Update","Data updated successfully")
+                        }.addOnFailureListener { e ->
+                            Log.e("Firebase Update","Error updating data ${e.message}")
+                        }
+                    }
+                }
+            }.addOnFailureListener { e ->
+                Log.e("Delete", "Error deleting image: ${e.message}")
+            }
+        }
+    }
 }
