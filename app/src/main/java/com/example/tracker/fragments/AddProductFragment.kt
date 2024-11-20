@@ -150,6 +150,8 @@ class AddProductFragment : Fragment() {
                         editTextBarcode.text.clear()
                         spinnerCountry.setSelection(0)
                         spinnerCategory.setSelection(0)
+                        view.findViewById<ImageView>(R.id.imageViewPick).setImageResource(R.drawable.baseline_map_24)
+                        uri = null
                     }
                 }
             })
@@ -185,9 +187,8 @@ class AddProductFragment : Fragment() {
 //        Log.i("AddProductManufacturer", manufacturer)
         if (name.isNotEmpty() && manufacturer.isNotEmpty() && barcode.isNotEmpty()){
 
-            val id = productRef.push().key!!
-
             uri?.let {
+                val id = productRef.push().key!!
                 storageRef.child(id).putFile(it).addOnSuccessListener { task ->
                     task.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url ->
                         Toast.makeText(requireContext(), "Image stored successfully",Toast.LENGTH_SHORT).show()

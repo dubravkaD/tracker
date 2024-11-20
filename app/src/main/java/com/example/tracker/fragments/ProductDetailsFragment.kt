@@ -20,8 +20,11 @@ import androidx.navigation.fragment.navArgs
 import com.example.tracker.R
 import com.example.tracker.models.Product
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -43,7 +46,7 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var favoritesRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
-//    private var favorites = false
+    private var favorites = false
 
     val args: ProductDetailsFragmentArgs by navArgs()
 
@@ -77,7 +80,7 @@ class ProductDetailsFragment : Fragment() {
         }
 
         tvName.text = product.name
-        tvUser.text = product.user?.username ?: "No User"
+        tvUser.text = "Author " + product.user?.username ?: "No User"
         tvManufacturer.text = product.manufacturer
         tvOrigin.text = product.countryOfOrigin
         tvCategory.text = product.category
@@ -89,20 +92,65 @@ class ProductDetailsFragment : Fragment() {
         userRef = FirebaseDatabase.getInstance().getReference("users")
         favoritesRef = FirebaseDatabase.getInstance().getReference("favorites")
 
-        if(product.id != null && product.image!=null){
-            storageRef.child("/"+product.id).getBytes(10*1024*1024).addOnSuccessListener {
-                val bitmap = BitmapFactory.decodeByteArray(it,0,it.size)
+        if (product.id != null && product.image != null) {
+            storageRef.child("/" + product.id).getBytes(10 * 1024 * 1024).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
                 ivProductImage.setImageBitmap(bitmap)
             }.addOnFailureListener {
-                Log.w("Firebase Storage","Cannot retrieve image from storage",it)
+                Log.w("Firebase Storage", "Cannot retrieve image from storage", it)
             }
         }
 
+        if (product.user?.uid == auth.currentUser?.uid) {
+            ivAddFavorites.visibility = View.GONE
+            tvUser.text = "This product was created by you"
+        } else {
+            product.id?.let { findInFavorites(it) }
+            updateImageFavorites(favorites)
+        }
+
         // Favorites
-//        ivAddFavorites.setOnClickListener {
-//            favorites = !favorites
-//            updateImageFavorites(favorites)
-//        }
+        ivAddFavorites.setOnClickListener {
+            favorites = !favorites
+            if (favorites) {
+                product.id?.let { id ->
+                    favoritesRef.child(id).setValue(product).addOnSuccessListener {
+                        Log.d("Add Favorites", "Data updated successfully")
+                        updateImageFavorites(favorites)
+                        Toast.makeText(
+                            view.context,
+                            "Successfully added to favorites",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }.addOnFailureListener { e ->
+                        Log.e("Add to favorites", "Error adding data to favorites ${e.message}")
+                    }
+                }
+            } else {
+                product.id?.let { productID ->
+                    favoritesRef.child(productID).removeValue().addOnSuccessListener {
+                        Toast.makeText(
+                            view.context,
+                            "Successfully removed from favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        updateImageFavorites(favorites)
+                    }.addOnFailureListener { e ->
+                        Toast.makeText(
+                            view.context,
+                            "Error removing from favorites",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e(
+                            "Remove from favorites",
+                            "Error deleting product from favorites: ${e.message}"
+                        )
+                    }
+                }
+                updateImageFavorites(favorites)
+            }
+        }
+
 //        if (auth.currentUser?.uid != product.user?.uid){
 //            ivAddFavorites.setOnClickListener {
 //                favoritesRef.child(auth.currentUser?.uid!!).setValue(product).addOnSuccessListener {
@@ -127,4 +175,23 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
+    private fun findInFavorites(productID: String) {
+        favoritesRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (favoritesSnapshot in snapshot.children) {
+                    if (
+                        favoritesSnapshot.getValue(Product::class.java) != null &&
+                        favoritesSnapshot.getValue(Product::class.java)?.id == productID
+                    ) {
+                        favorites = true
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Find Favorites", "Failed to read value", error.toException())
+            }
+
+        })
+    }
 }

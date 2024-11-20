@@ -16,6 +16,8 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.tracker.R
@@ -177,7 +179,17 @@ class UpdateFragment : Fragment() {
                 categoryString = category
             }
             update(name,manufacturer,barcode,categoryString,countryString)
-            Navigation.findNavController(view).navigate(UpdateFragmentDirections.actionUpdateFragmentToMyProductsFragment())
+            // Navigation fix
+//            Navigation.findNavController(view).navigate(UpdateFragmentDirections.actionUpdateFragmentToMyProductsFragment())
+            Navigation
+                .findNavController(view)
+                .navigate(
+                    R.id.myProductsFragment,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(R.id.updateFragment,true)
+                        .build()
+                )
         }
 
         return view
