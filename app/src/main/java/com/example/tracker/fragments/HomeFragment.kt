@@ -10,12 +10,14 @@ import android.widget.EditText
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.adapters.ProductAdapter
 import com.example.tracker.models.Product
 import com.example.tracker.R
 import com.example.tracker.models.User
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,6 +32,8 @@ class HomeFragment : Fragment() {
     private lateinit var searchButton: ImageButton
     private lateinit var searchEditText: EditText
     private lateinit var searchView: SearchView
+    private lateinit var fabAdd: FloatingActionButton
+    private lateinit var fabScan: FloatingActionButton
     
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
@@ -118,6 +122,13 @@ class HomeFragment : Fragment() {
         searchButton.setOnClickListener {
             val query = searchEditText.text.toString()
             adapter.filter(query)
+        }
+
+        // Floating Action Buttons
+        fabAdd = view.findViewById(R.id.fabAdd)
+
+        fabAdd.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.addProductFragment)
         }
 
         return view
