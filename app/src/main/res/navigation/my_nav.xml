@@ -10,7 +10,11 @@
         android:id="@+id/favoritesFragment"
         android:name="com.example.tracker.fragments.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addProductFragment"
         android:name="com.example.tracker.fragments.AddProductFragment"
@@ -66,6 +70,9 @@
         <action
             android:id="@+id/action_productDetailsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_productDetailsFragment_to_favoritesFragment2"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
