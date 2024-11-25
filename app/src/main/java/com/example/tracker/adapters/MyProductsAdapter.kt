@@ -84,13 +84,11 @@ class MyProductsAdapter(
                 when (menuItem.itemId) {
                     R.id.updateProduct -> {
                         productSelected(product)
-//                        Toast.makeText(itemView.context, "Update", Toast.LENGTH_LONG).show()
                         true
                     }
 
                     R.id.deleteProduct -> {
                         showDialog(product)
-//                        Toast.makeText(itemView.context,"Delete",Toast.LENGTH_LONG).show()
                         true
                     }
 
@@ -108,13 +106,11 @@ class MyProductsAdapter(
             builder.setMessage("Do you want to delete this product")
 
             builder.setPositiveButton("OK") { dialog, which ->
-//                Toast.makeText(itemView.context, "OK clicked", Toast.LENGTH_SHORT).show()
                 deleteProduct(product)
                 dialog.dismiss()
             }
 
             builder.setNegativeButton("Cancel") { dialog, which ->
-//                Toast.makeText(itemView.context, "Cancel clicked", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
 

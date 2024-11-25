@@ -43,10 +43,8 @@ class ProductAdapter(val context: Context, val view: View, var productList: Arra
             }.addOnFailureListener {
                 Log.w("Firebase Storage","Cannot retrieve image from storage",it)
             }
-//            viewHolder.productImage.setImageURI(Uri.parse(current.image))
         }
         viewHolder.productName.text = current.name
-//        viewHolder.productImage.text = current.image
         viewHolder.manufacturer.text = current.manufacturer
         viewHolder.countryOfOrigin.text = current.countryOfOrigin
         viewHolder.barcode.text = current.barcode
@@ -71,10 +69,11 @@ class ProductAdapter(val context: Context, val view: View, var productList: Arra
 
     fun filter(name:String){
         if(name.isNotEmpty()){
-            productList = productList.filter { it.name?.contains(name, ignoreCase = true) == true } as ArrayList<Product>
+            productList = productList.filter { it.name?.contains(name, ignoreCase = true) == true || it.barcode?.contains(name, ignoreCase = true) == true } as ArrayList<Product>
+            notifyDataSetChanged()
+        } else {
             notifyDataSetChanged()
         }
-//        val tvResult = view.findViewById<TextView>(R.id.tvNoResult)
-//        tvResult.visibility = if(productList.isEmpty()) View.VISIBLE else View.GONE
+
     }
 }

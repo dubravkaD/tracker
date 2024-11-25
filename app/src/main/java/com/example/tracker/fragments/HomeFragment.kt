@@ -85,28 +85,27 @@ class HomeFragment : Fragment() {
         })
 
         // Search
-//        searchView = view.findViewById(R.id.sv)
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                newText?.let{
-//                    adapter.filter(it)
-//                }
-//                return true
-//            }
-//
-//        })
-        searchEditText = view.findViewById(R.id.searchEditText)
-        searchEditText.text.clear()
-        searchButton = view.findViewById(R.id.ibSearch)
+        searchView = view.findViewById(R.id.sv)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter(query ?: "")
+                return false
+            }
 
-        searchButton.setOnClickListener {
-            val query = searchEditText.text.toString()
-            adapter.filter(query)
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter(newText ?: "")
+                return true
+            }
+
+        })
+//        searchEditText = view.findViewById(R.id.searchEditText)
+//        searchEditText.text.clear()
+//        searchButton = view.findViewById(R.id.ibSearch)
+//
+//        searchButton.setOnClickListener {
+//            val query = searchEditText.text.toString()
+//            adapter.filter(query)
+//        }
 
         // Floating Action Button
         fabAdd = view.findViewById(R.id.fabAdd)

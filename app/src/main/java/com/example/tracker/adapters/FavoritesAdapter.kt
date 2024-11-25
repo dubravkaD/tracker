@@ -49,17 +49,11 @@ class FavoritesAdapter(val context: Context, val view:View, private val favorite
         viewHolder.name.text = current.name
         viewHolder.barcode.text = current.barcode
 
-        // Issue with navigation
-//        viewHolder.card.setOnClickListener {
-//            val action = FavoritesFragmentDirections.actionFavoritesFragmentToProductDetailsFragment(current)
-//            Navigation.findNavController(view).navigate(action)
-//        }
     }
 
     class FavoritesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val image = itemView.findViewById<ImageView>(R.id.ivFavoritesImage)
         val name = itemView.findViewById<TextView>(R.id.tvFavoritesName)
         val barcode = itemView.findViewById<TextView>(R.id.tvFavoritesBarcode)
-        val card = itemView.findViewById<CardView>(R.id.cvFavoritesItem)
     }
 }

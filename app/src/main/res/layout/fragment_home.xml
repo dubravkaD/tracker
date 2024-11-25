@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment"
-    android:layout_marginTop="35dp"
     android:layout_marginHorizontal="35dp"
-    android:layout_marginBottom="15dp">
+    android:layout_marginTop="35dp"
+    android:layout_marginBottom="15dp"
+    tools:context=".fragments.HomeFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -16,27 +16,34 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <EditText-->
+        <!--                android:id="@+id/searchEditText"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="48dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:autofillHints="@string/search"-->
+        <!--                android:hint="@string/search"-->
+        <!--                android:inputType="text" />-->
+
+        <!--            <ImageButton-->
+        <!--                android:id="@+id/ibSearch"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="48dp"-->
+        <!--                android:contentDescription="@string/search"-->
+        <!--                android:src="@drawable/baseline_search_24" />-->
+        <!--        </LinearLayout>-->
+
+        <SearchView
+            android:id="@+id/sv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/searchEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:autofillHints="@string/search"
-                android:hint="@string/search"
-                android:inputType="text" />
-
-            <ImageButton
-                android:id="@+id/ibSearch"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/search"
-                android:src="@drawable/baseline_search_24" />
-        </LinearLayout>
+            android:iconifiedByDefault="false"
+            android:queryHint="Search name" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProducts"
@@ -46,20 +53,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
-
-<!--    <SearchView-->
-<!--        android:id="@+id/sv"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:iconifiedByDefault="false"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tvNoResult"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="20sp"-->
-<!--        android:text="@string/no_result"-->
-<!--        android:visibility="gone"/>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"
@@ -73,75 +66,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fabScan"-->
-<!--        android:layout_width="60dp"-->
-<!--        android:layout_height="60dp"-->
-<!--        android:clickable="true"-->
-<!--        android:contentDescription="@string/scan"-->
-<!--        android:focusable="true"-->
-<!--        android:src="@drawable/baseline_camera_alt_24"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/fabAdd"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.98" />-->
-
-
-    <!--    <LinearLayout-->
-<!--        android:id="@+id/llsearch"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_marginTop="35dp"-->
-<!--        android:layout_marginHorizontal="35dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" >-->
-<!--        <EditText-->
-<!--            android:id="@+id/searchEditText"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:autofillHints="@string/search"-->
-<!--            android:hint="@string/search"-->
-<!--            android:layout_weight="1"-->
-<!--            android:inputType="text" />-->
-<!--        <ImageButton-->
-<!--            android:id="@+id/ibSearch"-->
-<!--            android:layout_width="48dp"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:contentDescription="@string/search"-->
-<!--            android:src="@drawable/baseline_search_24"/>-->
-<!--    </LinearLayout>-->
-
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/llrv"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/llsearch">-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rvProduct"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            tools:listitem="@layout/product_list_item" />-->
-<!--    </LinearLayout>-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/image"-->
-<!--        android:layout_width="96dp"-->
-<!--        android:layout_height="96dp"-->
-<!--        android:contentDescription="@string/home"-->
-<!--        android:src="@drawable/baseline_home_24"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
