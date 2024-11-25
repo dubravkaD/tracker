@@ -47,7 +47,6 @@ class RegisterFragment : Fragment() {
             val confirmPass = view.findViewById<EditText>(R.id.edtCPassword).text.toString()
             if(pass == confirmPass){
                 register(email,pass,username)
-//                Toast.makeText(view.context,"Registered",Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(view.context,"Password does not match confirmed",Toast.LENGTH_LONG).show()
             }

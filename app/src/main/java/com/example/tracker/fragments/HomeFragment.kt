@@ -33,11 +33,9 @@ class HomeFragment : Fragment() {
     private lateinit var searchEditText: EditText
     private lateinit var searchView: SearchView
     private lateinit var fabAdd: FloatingActionButton
-    private lateinit var fabScan: FloatingActionButton
     
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProductAdapter
-    private lateinit var productList: ArrayList<Product>
     
     private lateinit var productRef: DatabaseReference
     private lateinit var storageRef: StorageReference
@@ -58,22 +56,8 @@ class HomeFragment : Fragment() {
         storageRef = FirebaseStorage.getInstance().getReference("product_images")
         userRef = FirebaseDatabase.getInstance().getReference("users")
 
-        val list = ArrayList<Product>()
-
         // Product List
-//        productList = ArrayList<Product>()
-//        val user = User("d", "d@d", "cjghc463ufb458")
-//        val product1 = Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food")
-//        productList.add(product1)
-//        productList.add(Product("1", user, "product1", "m", "Denmark", "45163ngu", "Food"))
-//        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"aproduct1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"bproduct1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"cproduct1","m","Denmark","45163ngu","Food"))
-//        productList.add(Product("1",user,"product1","m","Denmark","45163ngu","Food"))
+        val list = ArrayList<Product>()
 
         // RecyclerView
         adapter = ProductAdapter(view.context,view, list)

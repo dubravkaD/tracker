@@ -52,7 +52,6 @@ class MyProductsFragment : Fragment() {
 
         // RecyclerView
         adapter = MyProductsAdapter(view.context,view, mProductList) { product ->
-//            Log.i("MyProducts", "Selected product $product") // working
             Navigation.findNavController(view).navigate(MyProductsFragmentDirections.actionMyProductsFragmentToUpdateFragment(product))
         }
         recyclerView = view.findViewById(R.id.rvMyProducts)

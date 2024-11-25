@@ -179,8 +179,6 @@ class UpdateFragment : Fragment() {
                 categoryString = category
             }
             update(name,manufacturer,barcode,categoryString,countryString)
-            // Navigation fix
-//            Navigation.findNavController(view).navigate(UpdateFragmentDirections.actionUpdateFragmentToMyProductsFragment())
             Navigation
                 .findNavController(view)
                 .navigate(

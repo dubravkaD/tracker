@@ -136,14 +136,10 @@ class AddProductFragment : Fragment() {
             name = editTextName.text.toString()
             manufacturer = editTextManufacturer.text.toString()
             barcode = editTextBarcode.text.toString()
-//            Log.i("Saved values","name $name man $manufacturer bartext $barText country $country category $category")
-//            Log.i("Barcode length", barcodeText.length)
-//            save()
             getUser(object : UserCallback {
                 override fun onDataReceived(u: User?) {
                     val user = u
                     if (user != null) {
-//                        Log.i("Save","Values for category and country before save $category  $country")
                         save(name,manufacturer,barcode,user,category,country)
                         editTextName.text.clear()
                         editTextManufacturer.text.clear()
@@ -181,10 +177,6 @@ class AddProductFragment : Fragment() {
 
     private fun save(name:String,manufacturer:String,barcode:String,user:User,categoryString: String,countryString: String) {
 
-//        Log.i("Values for category and country in save","$categoryString  $countryString")
-//        Log.i("AddProductName", name)
-//        Log.i("AddProductBarcode", barcode)
-//        Log.i("AddProductManufacturer", manufacturer)
         if (name.isNotEmpty() && manufacturer.isNotEmpty() && barcode.isNotEmpty()){
 
             uri?.let {

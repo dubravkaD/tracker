@@ -40,30 +40,10 @@
             app:destination="@id/addProductFragment" />
     </fragment>
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.tracker.fragments.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-<!--        <action-->
-<!--            android:id="@+id/action_mainFragment_to_productDetailsFragment"-->
-<!--            app:destination="@id/productDetailsFragment" />-->
-<!--        <argument-->
-<!--            android:name="product"-->
-<!--            app:argType="string"-->
-<!--            android:defaultValue="my product" />-->
-    </fragment>
-    <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.example.tracker.fragments.ProductDetailsFragment"
         android:label="fragment_product_details"
         tools:layout="@layout/fragment_product_details" >
-<!--        <action-->
-<!--            android:id="@+id/action_productDetailsFragment_to_mainFragment"-->
-<!--            app:destination="@id/mainFragment" />-->
-<!--        <argument-->
-<!--            android:name="productFromMain"-->
-<!--            app:argType="string"-->
-<!--            android:defaultValue="Product1" />-->
         <argument
             android:name="product"
             app:argType="com.example.tracker.models.Product" />

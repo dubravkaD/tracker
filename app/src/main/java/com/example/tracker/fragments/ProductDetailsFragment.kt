@@ -156,19 +156,6 @@ class ProductDetailsFragment : Fragment() {
             }
         }
 
-//        if (auth.currentUser?.uid != product.user?.uid){
-//            ivAddFavorites.setOnClickListener {
-//                favoritesRef.child(auth.currentUser?.uid!!).setValue(product).addOnSuccessListener {
-//                    ivAddFavorites.setImageResource(R.drawable.baseline_favorite_24)
-//                    Toast.makeText(requireContext(), "Product successfully added to favorites", Toast.LENGTH_SHORT).show()
-//                }.addOnFailureListener {
-//                    Toast.makeText(requireContext(), "Product unsuccessfully added to favorites", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        } else {
-//            ivAddFavorites.visibility = View.GONE
-//        }
-
         return view
     }
 
