@@ -74,18 +74,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabScan"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:clickable="true"
-        android:contentDescription="@string/scan"
-        android:focusable="true"
-        android:src="@drawable/baseline_camera_alt_24"
-        app:layout_constraintBottom_toTopOf="@+id/fabAdd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fabScan"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:clickable="true"-->
+<!--        android:contentDescription="@string/scan"-->
+<!--        android:focusable="true"-->
+<!--        android:src="@drawable/baseline_camera_alt_24"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/fabAdd"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.98" />-->
 
 
     <!--    <LinearLayout-->

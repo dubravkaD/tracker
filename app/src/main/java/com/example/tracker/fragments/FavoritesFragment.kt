@@ -66,7 +66,7 @@ class FavoritesFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("getUser","Failed to read value",error.toException())
+                Log.w("Favorites form firebase","Failed to read value",error.toException())
             }
 
         })

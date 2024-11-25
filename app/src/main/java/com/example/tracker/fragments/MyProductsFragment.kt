@@ -74,7 +74,7 @@ class MyProductsFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("getUser","Failed to read value",error.toException())
+                Log.w("Products form firebase","Failed to read value",error.toException())
             }
 
         })

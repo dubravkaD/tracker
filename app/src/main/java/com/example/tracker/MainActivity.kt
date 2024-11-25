@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
 //        navController.navigate(R.id.splashFragment)
         navController.navigate(R.id.homeFragment)
+
+
     }
 
     public fun setBottomNavigationVisibility(visibility:Int){

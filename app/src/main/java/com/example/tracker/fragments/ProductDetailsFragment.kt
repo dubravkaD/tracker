@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.tracker.R
 import com.example.tracker.models.Product
+import com.example.tracker.util.interfaces.FavoritesCallback
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -105,8 +106,12 @@ class ProductDetailsFragment : Fragment() {
             ivAddFavorites.visibility = View.GONE
             tvUser.text = "This product was created by you"
         } else {
-            product.id?.let { findInFavorites(it) }
-            updateImageFavorites(favorites)
+            product.id?.let { findInFavorites(it, object : FavoritesCallback {
+                override fun onDataReceived(fav: Boolean) {
+                    favorites = fav
+                    updateImageFavorites(favorites)
+                }
+            }) }
         }
 
         // Favorites
@@ -175,7 +180,7 @@ class ProductDetailsFragment : Fragment() {
         }
     }
 
-    private fun findInFavorites(productID: String) {
+    private fun findInFavorites(productID: String,callback:FavoritesCallback) {
         favoritesRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (favoritesSnapshot in snapshot.children) {
@@ -183,7 +188,7 @@ class ProductDetailsFragment : Fragment() {
                         favoritesSnapshot.getValue(Product::class.java) != null &&
                         favoritesSnapshot.getValue(Product::class.java)?.id == productID
                     ) {
-                        favorites = true
+                        callback.onDataReceived(fav = true)
                     }
                 }
             }

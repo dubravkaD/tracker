@@ -124,7 +124,7 @@ class HomeFragment : Fragment() {
             adapter.filter(query)
         }
 
-        // Floating Action Buttons
+        // Floating Action Button
         fabAdd = view.findViewById(R.id.fabAdd)
 
         fabAdd.setOnClickListener {
