@@ -66,9 +66,3 @@ The app uses Firebase Realtime Database to store product information. Each produ
 ### Firebase Authentication
 
 Users are required to sign up and sign in using their email and password. This allows them to track their own products and manage their data.
-
-## Acknowledgments
-
-- Firebase for providing Real-Time Database and Storage solutions.
-- Android for their comprehensive SDK and tools to build the app.
-- Kotlin for being an excellent language for Android development.
